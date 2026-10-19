@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-canvas-width="390" data-canvas-height="844">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>回家qī饭 · 垫江方言视域下饮食文化与亲情叙事</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M8 22h48c0 14-10 26-24 26S8 36 8 22z' fill='%23A6583C'/%3E%3Cpath d='M6 18c0-2 2-3 4-2l8 3c1 0 1 2 0 2l-8 2c-2 1-4-1-4-3z' fill='%23F7F1E5'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&display=swap">
+<style>
+:root{
+  --paper:#F7F1E5;
+  --paper-deep:#EFE6D3;
+  --clay:#A6583C;
+  --clay-dark:#7C3F2B;
+  --ink:#3E3128;
+  --ink-soft:#6B5A4C;
+  --cream:#FBF7EF;
+  --line:rgba(62,49,40,.18);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:"Noto Serif SC","Songti SC","SimSun",serif;
+  background:#231A14;
+  color:var(--ink);
+  overflow:hidden;
+}
+.stage{
+  height:100vh;height:100dvh;
+  position:relative;
+}
+.screen{
+  position:absolute;inset:0;
+  height:100%;width:100%;
+  opacity:0;visibility:hidden;
+  transform:translateY(24px);
+  transition:opacity .6s ease,transform .6s ease,visibility 0s linear .6s;
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+.screen.active{
+  opacity:1;visibility:visible;
+  transform:translateY(0);
+  transition:opacity .6s ease,transform .6s ease,visibility 0s;
+  z-index:2;
+}
+/* 背景图 */
+.bg{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;
+  z-index:0;
+}
+.bg::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(35,26,20,.18) 0%,rgba(35,26,20,.08) 34%,rgba(35,26,20,.72) 78%,rgba(35,26,20,.9) 100%);
+}
+.bg.flat::after{background:linear-gradient(180deg,rgba(35,26,20,.38) 0%,rgba(35,26,20,.82) 100%)}
+/* 通用容器 */
+.inner{
+  position:relative;z-index:1;
+  flex:1;display:flex;flex-direction:column;
+  padding:64px 30px 56px;
+  color:var(--cream);
+}
+.tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:12px;letter-spacing:3px;
+  color:var(--cream);opacity:.9;
+  padding:6px 14px;border:1px solid rgba(251,247,239,.5);
+  border-radius:999px;width:fit-content;
+}
+.tag::before{content:"";width:14px;height:1px;background:rgba(251,247,239,.8)}
+/* 页码 */
+.pageno{
+  position:absolute;top:22px;right:22px;z-index:3;
+  font-size:12px;letter-spacing:2px;color:rgba(251,247,239,.85);
+  display:flex;align-items:baseline;gap:4px;
+}
+.pageno b{font-size:20px;font-weight:700;color:var(--cream)}
+.pageno span{opacity:.7}
+/* 圆点导航 */
+.dots{
+  position:fixed;right:14px;top:50%;transform:translateY(-50%);
+  z-index:30;display:flex;flex-direction:column;gap:12px;
+}
+.dots button{
+  width:8px;height:8px;border-radius:50%;
+  border:1px solid rgba(251,247,239,.7);
+  background:transparent;padding:0;cursor:pointer;
+  transition:background .3s,transform .3s;
+}
+.dots button.on{background:var(--cream);transform:scale(1.25)}
+/* ============ 第1屏 封面 ============ */
+.cover .inner{
+  align-items:center;justify-content:flex-end;
+  text-align:center;padding-bottom:92px;
+}
+.cover-mark{
+  font-size:13px;letter-spacing:6px;color:rgba(251,247,239,.85);
+  margin-bottom:18px;
+}
+.cover-title{
+  font-size:64px;font-weight:900;line-height:1.15;letter-spacing:4px;
+  color:var(--cream);
+  text-shadow:0 2px 24px rgba(35,26,20,.45);
+}
+.cover-title em{font-style:normal;color:#F3C9A8}
+.cover-sub{
+  margin-top:16px;font-size:15px;line-height:1.9;letter-spacing:2px;
+  color:rgba(251,247,239,.92);max-width:280px;
+}
+.cover-enter{
+  margin-top:34px;
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:inherit;font-size:14px;letter-spacing:3px;color:var(--ink);
+  background:var(--cream);border:none;border-radius:999px;
+  padding:14px 30px;cursor:pointer;
+  box-shadow:0 6px 24px rgba(35,26,20,.35);
+  transition:transform .25s,background .25s;
+}
+.cover-enter:active{transform:scale(.96)}
+.cover-hint{
+  margin-top:20px;font-size:11px;letter-spacing:2px;color:rgba(251,247,239,.6);
+}
+/* ============ 第2屏 方言引言 ============ */
+.intro .inner{justify-content:flex-end;padding-bottom:66px}
+.intro-block{
+  background:rgba(35,26,20,.42);
+  border-left:3px solid var(--clay);
+  padding:26px 24px 28px;
+  backdrop-filter:blur(3px);
+}
+.dialect-word{
+  display:flex;align-items:baseline;gap:14px;
+}
+.dialect-word h2{
+  font-size:56px;font-weight:900;color:var(--cream);line-height:1;
+}
+.dialect-word .pinyin{font-size:15px;letter-spacing:2px;color:#F3C9A8}
+.dialect-meaning{
+  margin-top:14px;font-size:14px;line-height:1.9;color:rgba(251,247,239,.94);
+}
+.dialect-meaning b{color:#F3C9A8;font-weight:700}
+.listen-btn{
+  margin-top:22px;display:inline-flex;align-items:center;gap:10px;
+  font-family:inherit;font-size:13px;letter-spacing:2px;color:var(--cream);
+  background:rgba(166,88,60,.85);border:none;border-radius:999px;
+  padding:11px 20px;cursor:pointer;transition:background .25s,transform .2s;
+}
+.listen-btn:active{transform:scale(.95)}
+.listen-btn .dot{
+  width:7px;height:7px;border-radius:50%;background:#F3C9A8;
+}
+.listen-btn.speaking{background:rgba(124,63,43,.95)}
+.origin{
+  margin-top:24px;font-size:13px;line-height:2;color:rgba(251,247,239,.8);
+  border-top:1px solid rgba(251,247,239,.25);padding-top:16px;
+}
+/* ============ 第3屏 饮食文化 ============ */
+.food .inner{justify-content:flex-end;padding-bottom:60px}
+.food-head{margin-bottom:18px}
+.food-head h2{
+  font-size:30px;font-weight:900;color:var(--cream);line-height:1.4;
+}
+.food-head p{
+  margin-top:10px;font-size:14px;line-height:1.9;color:rgba(251,247,239,.9);
+}
+.food-list{
+  display:flex;flex-wrap:wrap;gap:10px;
+}
+.food-list span{
+  font-size:13px;letter-spacing:1px;color:var(--cream);
+  background:rgba(35,26,20,.45);
+  border:1px solid rgba(251,247,239,.35);
+  border-radius:999px;padding:8px 16px;
+}
+.food-note{
+  margin-top:18px;font-size:12px;line-height:1.9;color:rgba(251,247,239,.72);
+  border-left:2px solid rgba(243,201,168,.7);padding-left:12px;
+}
+/* ============ 第4屏 纪实故事 ============ */
+.story .inner{justify-content:flex-end;padding-bottom:36px}
+.story h2{
+  font-size:26px;font-weight:900;color:var(--cream);line-height:1.4;margin-bottom:4px;
+}
+.story .lead{
+  font-size:12px;color:rgba(251,247,239,.8);margin-bottom:12px;letter-spacing:1px;
+}
+.timeline{
+  display:grid;grid-template-columns:46px 14px 1fr;
+  row-gap:10px;align-items:start;
+}
+.tl-node .tl-num{
+  font-size:12px;letter-spacing:2px;color:#F3C9A8;padding-top:2px;
+}
+.tl-axis{position:relative;height:100%;min-height:26px}
+.tl-axis::before{
+  content:"";position:absolute;left:50%;top:5px;bottom:-2px;
+  width:1px;background:rgba(251,247,239,.45);
+  transform:translateX(-50%);
+}
+.tl-node:last-child .tl-axis::before{bottom:auto;height:14px}
+.tl-axis .tl-dot{
+  position:absolute;left:50%;top:5px;width:7px;height:7px;
+  border-radius:50%;background:#F3C9A8;transform:translateX(-50%);
+  box-shadow:0 0 0 3px rgba(243,201,168,.25);
+}
+.tl-card{
+  background:rgba(35,26,20,.42);border-radius:2px;
+  padding:7px 12px;backdrop-filter:blur(2px);
+}
+.tl-card h3{font-size:14px;font-weight:700;color:var(--cream);line-height:1.45}
+.tl-card p{font-size:11.5px;line-height:1.6;color:rgba(251,247,239,.82);margin-top:2px}
+/* ============ 第5屏 亲情细节 ============ */
+.detail .inner{justify-content:flex-end;padding-bottom:64px}
+.detail-quote{
+  background:rgba(35,26,20,.5);
+  border-left:3px solid var(--clay);
+  padding:28px 24px;backdrop-filter:blur(3px);
+}
+.detail-quote .qmark{
+  font-size:15px;letter-spacing:3px;color:#F3C9A8;
+}
+.detail-quote h2{
+  font-size:26px;font-weight:900;color:var(--cream);line-height:1.55;margin-top:10px;
+}
+.detail-quote p{
+  margin-top:16px;font-size:13px;line-height:2;color:rgba(251,247,239,.88);
+}
+.detail-quote p b{color:#F3C9A8;font-weight:700}
+.detail-tags{
+  margin-top:18px;display:flex;gap:10px;
+}
+.detail-tags span{
+  font-size:12px;color:var(--cream);background:rgba(166,88,60,.7);
+  padding:6px 14px;border-radius:999px;letter-spacing:1px;
+}
+/* ============ 第6屏 收尾 ============ */
+.ending .inner{align-items:center;justify-content:flex-end;text-align:center;padding-bottom:70px}
+.ending-mark{
+  font-size:12px;letter-spacing:5px;color:rgba(251,247,239,.75);margin-bottom:18px;
+}
+.ending h2{
+  font-size:30px;font-weight:900;line-height:1.7;color:var(--cream);
+}
+.ending h2 em{font-style:normal;color:#F3C9A8}
+.ending p{
+  margin-top:20px;font-size:14px;line-height:2.1;color:rgba(251,247,239,.9);max-width:300px;
+}
+.ending .divider{width:44px;height:1px;background:rgba(243,201,168,.8);margin:22px auto}
+.ending .project{
+  font-size:12px;line-height:2;letter-spacing:1px;color:rgba(251,247,239,.72);
+}
+.ending .project b{color:rgba(251,247,239,.92);font-weight:600}
+.restart-btn{
+  margin-top:26px;
+  font-family:inherit;font-size:12px;letter-spacing:3px;color:var(--cream);
+  background:transparent;border:1px solid rgba(251,247,239,.5);
+  border-radius:999px;padding:10px 22px;cursor:pointer;transition:background .25s;
+}
+.restart-btn:active{background:rgba(251,247,239,.15)}
+/* 桌面适配：模拟手机画布 */
+@media (min-width:768px){
+  body{display:flex;align-items:center;justify-content:center;background:#1A120C}
+  .stage{
+    width:min(420px,100vw);height:min(880px,92vh);
+    border-radius:28px;overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,.55);
+  }
+  .screen{border-radius:28px}
+  .dots{right:max(14px,calc(50vw - 210px + 6px))}
+}
+@media (max-width:380px){
+  .cover-title{font-size:54px}
+  .dialect-word h2{font-size:48px}
+  .inner{padding-left:24px;padding-right:24px}
+}
+@media (prefers-reduced-motion:reduce){
+  .screen{transition:none}
+}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+
+  <!-- ===== 第1屏 封面 ===== -->
+  <section class="screen cover active" data-screen="1">
+    <div class="bg" style="background-image:url('https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/AmXTbu0AMouLJ4xsUFKcqpRqnyg')"></div>
+    <div class="pageno"><b>1</b><span>/6</span></div>
+    <div class="inner">
+      <div class="cover-mark">垫江方言视域下饮食文化与亲情叙事</div>
+      <h1 class="cover-title">回家<em>qī饭</em></h1>
+      <p class="cover-sub">一声乡音唤归途<br>一桌家常叙亲情</p>
+      <button class="cover-enter" id="enterBtn">轻触进入七饭时刻</button>
+      <div class="cover-hint">滑动或点击圆点翻页</div>
+    </div>
+  </section>
+
+  <!-- ===== 第2屏 方言引言 ===== -->
+  <section class="screen intro" data-screen="2">
+    <div class="bg" style="background-image:url('https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ZTcmbzx7DoIQXDxp3bscNRQsnGe')"></div>
+    <div class="pageno"><b>2</b><span>/6</span></div>
+    <div class="inner">
+      <span class="tag">方言释义</span>
+      <div style="flex:1"></div>
+      <div class="intro-block">
+        <div class="dialect-word">
+          <h2>qī饭</h2>
+          <span class="pinyin">qī fàn · 一声</span>
+        </div>
+        <p class="dialect-meaning">
+          垫江方言里，<b>"吃饭"读作"qī饭"</b>。一声短促的"qī"，是垫江人世代挂在嘴边的乡音，也是这个家庭里最温暖的召唤。
+        </p>
+        <button class="listen-btn" id="listenBtn"><span class="dot"></span>听一听 · 回家qī饭</button>
+        <p class="origin">
+          一次归乡，从母亲的"回家qī饭"开始。本作品以第一视角与第三视角纪实拍摄，记录垫江方言浸润下的家庭日常。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 第3屏 饮食文化 ===== -->
+  <section class="screen food" data-screen="3">
+    <div class="bg" style="background-image:url('https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Ru50bIIVYopOr8xtlE3c54pPnKg')"></div>
+    <div class="pageno"><b>3</b><span>/6</span></div>
+    <div class="inner">
+      <span class="tag">垫江味道</span>
+      <div style="flex:1"></div>
+      <div class="food-head">
+        <h2>一方水土，一桌席</h2>
+        <p>垫江人的餐桌，是石磨转出的豆花白，是坛子里腌出的咸菜香，是柴火灶上蒸腾的烟火气。</p>
+      </div>
+      <div class="food-list">
+        <span>石磨豆花</span>
+        <span>红油蘸水</span>
+        <span>泡菜咸菜</span>
+        <span>粉蒸肉</span>
+        <span>腊味拼盘</span>
+      </div>
+      <p class="food-note">"家家有石磨，户户有豆缸"，一口豆花蘸水，就是垫江人认得出的家乡味。</p>
+    </div>
+  </section>
+
+  <!-- ===== 第4屏 纪实故事 ===== -->
+  <section class="screen story" data-screen="4">
+    <div class="bg" style="background-image:url('https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Fd4cb8P28o9MAMxBb8EcKXJDnke')"></div>
+    <div class="pageno"><b>4</b><span>/6</span></div>
+    <div class="inner">
+      <span class="tag">归乡纪实</span>
+      <div style="flex:1"></div>
+      <h2>一次归乡，三幕烟火</h2>
+      <p class="lead">纪实短片《回家qī饭》叙事脉络</p>
+      <div class="timeline">
+        <div class="tl-node">
+          <div class="tl-num">壹</div>
+          <div class="tl-axis"><span class="tl-dot"></span></div>
+          <div class="tl-card">
+            <h3>车内 · 乡音呼唤</h3>
+            <p>母亲一句"回家qī饭"，与普通话"去哪吃饭"形成反差，归途开启。</p>
+          </div>
+        </div>
+        <div class="tl-node">
+          <div class="tl-num">贰</div>
+          <div class="tl-axis"><span class="tl-dot"></span></div>
+          <div class="tl-card">
+            <h3>外婆家 · 围桌同食</h3>
+            <p>久未归家的重逢，全程垫江方言对话，记录祖孙相处日常。</p>
+          </div>
+        </div>
+        <div class="tl-node">
+          <div class="tl-num">叁</div>
+          <div class="tl-axis"><span class="tl-dot"></span></div>
+          <div class="tl-card">
+            <h3>临别 · 赠食寄情</h3>
+            <p>外婆把咸菜、青菜、鸡蛋装进袋子，亲情化作行囊的重量。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 第5屏 亲情细节 ===== -->
+  <section class="screen detail" data-screen="5">
+    <div class="bg" style="background-image:url('https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Qu3SbqKmloptzjx0Et1cRt3Znsd')"></div>
+    <div class="pageno"><b>5</b><span>/6</span></div>
+    <div class="inner">
+      <span class="tag">以食寄情</span>
+      <div style="flex:1"></div>
+      <div class="detail-quote">
+        <span class="qmark">她没说"想我"，只说——</span>
+        <h2>"外头吃不到这个味，<br>多带点走。"</h2>
+        <p>
+          临行前，外婆把泡菜瓶、土鸡蛋、新摘的青菜塞满帆布袋。<b>离别的叮嘱不多</b>，全在一袋一袋的吃食里。乡音不说爱，<b>七饭桌上，处处都是爱</b>。
+        </p>
+        <div class="detail-tags">
+          <span>装得下的是吃食</span>
+          <span>装不下的是牵挂</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 第6屏 收尾 ===== -->
+  <section class="screen ending" data-screen="6">
+    <div class="bg flat" style="background-image:url('https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Z4GybX4POoRqthxpK3kcnQYsnad')"></div>
+    <div class="pageno"><b>6</b><span>/6</span></div>
+    <div class="inner">
+      <span class="ending-mark">结 语</span>
+      <h2>一声<em>qī饭</em>，<br>回家一次，<br>人间至味是团圆</h2>
+      <p>方言是声音的乡愁，饮食是舌尖的故土，亲情是永恒的归途。</p>
+      <div class="divider"></div>
+      <div class="project">
+        <b>《回家qī饭》创作综述</b><br>
+        垫江方言视域下饮食文化与亲情叙事表达<br>
+        网络与新媒体专业 · 毕业设计
+      </div>
+      <button class="restart-btn" id="restartBtn">再听一遍七饭故事</button>
+    </div>
+  </section>
+
+</div>
+
+<!-- 圆点导航 -->
+<div class="dots" id="dots">
+  <button data-go="1" class="on" aria-label="第1页"></button>
+  <button data-go="2" aria-label="第2页"></button>
+  <button data-go="3" aria-label="第3页"></button>
+  <button data-go="4" aria-label="第4页"></button>
+  <button data-go="5" aria-label="第5页"></button>
+  <button data-go="6" aria-label="第6页"></button>
+</div>
+
+<script>
+(function(){
+  var screens = Array.prototype.slice.call(document.querySelectorAll('.screen'));
+  var dots = Array.prototype.slice.call(document.querySelectorAll('.dots button'));
+  var current = 0;
+  var total = screens.length;
+
+  function goTo(idx){
+    if(idx < 0 || idx >= total || idx === current) return;
+    screens[current].classList.remove('active');
+    dots[current].classList.remove('on');
+    current = idx;
+    screens[current].classList.add('active');
+    dots[current].classList.add('on');
+  }
+  function next(){ goTo(current + 1); }
+  function prev(){ goTo(current - 1); }
+
+  // 圆点导航
+  dots.forEach(function(d, i){
+    d.addEventListener('click', function(){ goTo(i); });
+  });
+
+  // 封面进入
+  document.getElementById('enterBtn').addEventListener('click', function(){ goTo(1); });
+  // 收尾重播
+  document.getElementById('restartBtn').addEventListener('click', function(){ goTo(0); });
+
+  // 键盘
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === 'PageDown'){ e.preventDefault(); next(); }
+    else if(e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp'){ e.preventDefault(); prev(); }
+  });
+
+  // 触摸滑动
+  var startY = null;
+  document.addEventListener('touchstart', function(e){ startY = e.touches[0].clientY; }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if(startY === null) return;
+    var dy = e.changedTouches[0].clientY - startY;
+    if(Math.abs(dy) > 50){ dy < 0 ? next() : prev(); }
+    startY = null;
+  }, {passive:true});
+
+  // 滚轮
+  var wheelLock = false;
+  document.addEventListener('wheel', function(e){
+    if(wheelLock) return;
+    wheelLock = true;
+    if(Math.abs(e.deltaY) > 20){ e.deltaY > 0 ? next() : prev(); }
+    setTimeout(function(){ wheelLock = false; }, 700);
+  }, {passive:true});
+
+  // 方言语音：朗读"回家qī饭"
+  var listenBtn = document.getElementById('listenBtn');
+  var speaking = false;
+  function speakQifan(){
+    if(!('speechSynthesis' in window)){
+      alert('当前浏览器不支持语音合成，请在手机或新版浏览器中体验');
+      return;
+    }
+    if(speaking){ window.speechSynthesis.cancel(); speaking = false; listenBtn.classList.remove('speaking'); return; }
+    var u = new SpeechSynthesisUtterance('回家，qī饭');
+    u.lang = 'zh-CN';
+    u.rate = 0.85;
+    u.onend = function(){ speaking = false; listenBtn.classList.remove('speaking'); };
+    u.onerror = function(){ speaking = false; listenBtn.classList.remove('speaking'); };
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+    speaking = true;
+    listenBtn.classList.add('speaking');
+  }
+  listenBtn.addEventListener('click', speakQifan);
+})();
+</script>
+</body>
+</html>
